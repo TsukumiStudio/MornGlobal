@@ -16,6 +16,14 @@ namespace MornGlobal
 #if UNITY_EDITOR
                 if (_instance == null)
                 {
+                    {
+                        var preloadedAssets = PlayerSettings.GetPreloadedAssets().ToList();
+                        _instance = preloadedAssets.OfType<T>().FirstOrDefault();
+                        if (_instance != null)
+                        {
+                            return _instance;
+                        }
+                    }
                     var path = EditorUtility.SaveFilePanelInProject(
                         $"Save {typeof(T).Name}",
                         $"{typeof(T).Name}",
