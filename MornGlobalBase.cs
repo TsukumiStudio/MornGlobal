@@ -80,17 +80,17 @@ namespace MornGlobal
             LogInternal($"{ModuleName}/{typeof(T).Name}をアンロードしました。");
         }
 
-        protected void LogInternal(string message)
+        public void LogInternal(string message)
         {
             Helper.LogInternal(message);
         }
 
-        protected void LogErrorInternal(string message)
+        public void LogErrorInternal(string message)
         {
             Helper.LogErrorInternal(message);
         }
 
-        protected void LogWarningInternal(string message)
+        public void LogWarningInternal(string message)
         {
             Helper.LogWarningInternal(message);
         }
