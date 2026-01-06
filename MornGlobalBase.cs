@@ -24,11 +24,7 @@ namespace MornGlobal
                             return _instance;
                         }
                     }
-                    var path = EditorUtility.SaveFilePanelInProject(
-                        $"Save {typeof(T).Name}",
-                        $"{typeof(T).Name}",
-                        "asset",
-                        string.Empty);
+                    var path = EditorUtility.SaveFilePanelInProject($"Save {typeof(T).Name}", $"{typeof(T).Name}", "asset", string.Empty);
                     if (!string.IsNullOrEmpty(path))
                     {
                         var newSettings = CreateInstance<T>();
@@ -38,23 +34,17 @@ namespace MornGlobal
                         preloadedAssets.Add(newSettings);
                         PlayerSettings.SetPreloadedAssets(preloadedAssets.ToArray());
                     }
-                    _instance = AssetDatabase.FindAssets($"t:{typeof(T).Name}")
-                        .Select(AssetDatabase.GUIDToAssetPath)
-                        .Select(AssetDatabase.LoadAssetAtPath<T>)
-                        .FirstOrDefault();
+
+                    _instance = AssetDatabase.FindAssets($"t:{typeof(T).Name}").Select(AssetDatabase.GUIDToAssetPath).Select(AssetDatabase.LoadAssetAtPath<T>).FirstOrDefault();
                 }
 #endif
                 return _instance;
             }
         }
-        private MornGlobalHelper _helper;
-        private MornGlobalHelper Helper => _helper ??= new MornGlobalHelper(this);
+        private MornGlobalLogger _logger;
+        public MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(this);
         string IMornGlobal.ModuleName => ModuleName;
-        string IMornGlobal.Prefix => Prefix;
-        Color IMornGlobal.ModuleColor => ModuleColor;
         protected abstract string ModuleName { get; }
-        protected virtual string Prefix => "";
-        protected virtual Color ModuleColor => Color.green;
 
         private void OnEnable()
         {
@@ -80,19 +70,27 @@ namespace MornGlobal
             LogInternal($"{ModuleName}/{typeof(T).Name}をアンロードしました。");
         }
 
-        public void LogInternal(string message)
+        protected void LogInternal(string message)
         {
-            Helper.LogInternal(message);
+            Logger.LogInternal(message);
         }
 
-        public void LogErrorInternal(string message)
+        protected void LogErrorInternal(string message)
         {
-            Helper.LogErrorInternal(message);
+            Logger.LogErrorInternal(message);
         }
 
-        public void LogWarningInternal(string message)
+        protected void LogWarningInternal(string message)
         {
-            Helper.LogWarningInternal(message);
+            Logger.LogWarningInternal(message);
+        }
+
+        public void RegisterDefineSymbol()
+        {
+#if UNITY_EDITOR
+            var symbolName = "USE_" + string.Concat(ModuleName.Select((c, i) => i > 0 && char.IsUpper(c) ? "_" + c : c.ToString())).ToUpper();
+            _ = new MornGlobalDefineSymbolRegisterer(symbolName, _logger);
+#endif
         }
 
         protected void SetDirtyInternal(Object target)

@@ -5,26 +5,25 @@ using UnityEditor;
 
 namespace MornGlobal
 {
-    internal sealed class MornGlobalHelper
+    public sealed class MornGlobalLogger
     {
-        private readonly IMornGlobal _mornGlobal;
+        private readonly IMornGlobal _target;
 
-        public MornGlobalHelper(IMornGlobal mornGlobal)
+        public MornGlobalLogger(IMornGlobal target)
         {
-            _mornGlobal = mornGlobal;
+            _target = target;
         }
 
 #if UNITY_EDITOR
-        private bool ShowLog => EditorPrefs.GetBool($"{_mornGlobal.ModuleName}_ShowLog", true);
-        private bool ShowLogWarning => EditorPrefs.GetBool($"{_mornGlobal.ModuleName}_ShowLogWarning", true);
-        private bool ShowLogError => EditorPrefs.GetBool($"{_mornGlobal.ModuleName}_ShowLogError", true);
+        private bool ShowLog => EditorPrefs.GetBool($"{_target.ModuleName}_ShowLog", true);
+        private bool ShowLogWarning => EditorPrefs.GetBool($"{_target.ModuleName}_ShowLogWarning", true);
+        private bool ShowLogError => EditorPrefs.GetBool($"{_target.ModuleName}_ShowLogError", true);
 #else
         private bool ShowLog => Debug.isDebugBuild;
         private bool ShowLogWarning => Debug.isDebugBuild;
         private bool ShowLogError => Debug.isDebugBuild;
 #endif
-        private string Prefix => !string.IsNullOrEmpty(_mornGlobal.Prefix) ? _mornGlobal.Prefix
-            : $"[<color=#{ColorUtility.ToHtmlStringRGB(_mornGlobal.ModuleColor)}>{_mornGlobal.ModuleName}</color>] ";
+        private string Prefix => $"[<color=green>{_target.ModuleName}</color>] ";
 
         public void LogInternal(string message)
         {

@@ -6,30 +6,33 @@ namespace MornGlobal
     {
         private static T _instance;
         public static T I => _instance ??= new T();
-        private MornGlobalHelper _helper;
-        private MornGlobalHelper Helper => _helper ??= new MornGlobalHelper(this);
+        private MornGlobalLogger _logger;
+        private MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(this);
         string IMornGlobal.ModuleName => ModuleName;
-        string IMornGlobal.Prefix => Prefix;
-        Color IMornGlobal.ModuleColor => ModuleColor;
         protected abstract string ModuleName { get; }
-        protected virtual string Prefix => "";
-        protected virtual Color ModuleColor => Color.green;
 
         protected void LogInternal(string message)
         {
-            Helper.LogInternal(message);
+            Logger.LogInternal(message);
         }
 
         protected void LogErrorInternal(string message)
         {
-            Helper.LogErrorInternal(message);
+            Logger.LogErrorInternal(message);
         }
 
         protected void LogWarningInternal(string message)
         {
-            Helper.LogWarningInternal(message);
+            Logger.LogWarningInternal(message);
         }
-        
+
+        public void AddDefineSymbol(string symbolName)
+        {
+#if UNITY_EDITOR
+            _ = new MornGlobalDefineSymbolRegisterer(symbolName, _logger);
+#endif
+        }
+
         protected void SetDirtyInternal(Object target)
         {
 #if UNITY_EDITOR
