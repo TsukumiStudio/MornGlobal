@@ -39,8 +39,8 @@ namespace MornLib
                 return _instance;
             }
         }
-        private MornGlobalLogger _logger;
-        public MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(this);
+        private static MornGlobalLogger _logger;
+        public static MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(I);
         string IMornGlobal.ModuleName => ModuleName;
         public abstract string ModuleName { get; }
 
@@ -70,17 +70,17 @@ namespace MornLib
 
         protected void LogInternal(string message)
         {
-            Logger.LogInternal(message);
+            Logger.Log(message);
         }
 
         protected void LogErrorInternal(string message)
         {
-            Logger.LogErrorInternal(message);
+            Logger.LogError(message);
         }
 
         protected void LogWarningInternal(string message)
         {
-            Logger.LogWarningInternal(message);
+            Logger.LogWarning(message);
         }
 
         protected void SetDirtyInternal(Object target)

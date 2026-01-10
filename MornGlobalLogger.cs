@@ -23,7 +23,7 @@ namespace MornLib
 #endif
         private string Prefix => $"[<color=green>{_target.ModuleName}</color>] ";
 
-        public void LogInternal(string message)
+        public void Log(string message)
         {
             if (ShowLog)
             {
@@ -31,7 +31,7 @@ namespace MornLib
             }
         }
 
-        public void LogErrorInternal(string message)
+        public void LogError(string message)
         {
             if (ShowLogWarning)
             {
@@ -39,7 +39,7 @@ namespace MornLib
             }
         }
 
-        public void LogWarningInternal(string message)
+        public void LogWarning(string message)
         {
             if (ShowLogError)
             {

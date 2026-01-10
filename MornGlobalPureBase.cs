@@ -14,17 +14,17 @@ namespace MornLib
 
         protected void LogInternal(string message)
         {
-            Logger.LogInternal(message);
+            Logger.Log(message);
         }
 
         protected void LogErrorInternal(string message)
         {
-            Logger.LogErrorInternal(message);
+            Logger.LogError(message);
         }
 
         protected void LogWarningInternal(string message)
         {
-            Logger.LogWarningInternal(message);
+            Logger.LogWarning(message);
         }
 
         protected void SetDirtyInternal(Object target)
