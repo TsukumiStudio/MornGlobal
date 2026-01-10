@@ -1,4 +1,4 @@
-namespace MornGlobal
+namespace MornLib
 {
     public interface IMornGlobal
     {

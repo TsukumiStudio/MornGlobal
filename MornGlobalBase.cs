@@ -1,10 +1,8 @@
 using System.Linq;
-using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
+using UnityEngine;
 
-namespace MornGlobal
+namespace MornLib
 {
     public abstract class MornGlobalBase<T> : ScriptableObject, IMornGlobal where T : MornGlobalBase<T>
     {
@@ -83,14 +81,6 @@ namespace MornGlobal
         protected void LogWarningInternal(string message)
         {
             Logger.LogWarningInternal(message);
-        }
-
-        public void RegisterDefineSymbol()
-        {
-#if UNITY_EDITOR
-            var symbolName = "USE_" + string.Concat(ModuleName.Select((c, i) => i > 0 && char.IsUpper(c) ? "_" + c : c.ToString())).ToUpper();
-            _ = new MornGlobalDefineSymbolRegisterer(symbolName, _logger);
-#endif
         }
 
         protected void SetDirtyInternal(Object target)

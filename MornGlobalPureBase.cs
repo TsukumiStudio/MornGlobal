@@ -1,6 +1,7 @@
+using System.Linq;
 using UnityEngine;
 
-namespace MornGlobal
+namespace MornLib
 {
     public abstract class MornGlobalPureBase<T> : IMornGlobal where T : new()
     {
@@ -24,13 +25,6 @@ namespace MornGlobal
         protected void LogWarningInternal(string message)
         {
             Logger.LogWarningInternal(message);
-        }
-
-        public void AddDefineSymbol(string symbolName)
-        {
-#if UNITY_EDITOR
-            _ = new MornGlobalDefineSymbolRegisterer(symbolName, _logger);
-#endif
         }
 
         protected void SetDirtyInternal(Object target)
