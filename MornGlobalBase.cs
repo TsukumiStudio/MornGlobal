@@ -42,7 +42,7 @@ namespace MornLib
         private static MornGlobalLogger _logger;
         public static MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(I);
         string IMornGlobal.ModuleName => ModuleName;
-        public abstract string ModuleName { get; }
+        protected abstract string ModuleName { get; }
 
         private void OnEnable()
         {
