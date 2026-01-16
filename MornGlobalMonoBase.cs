@@ -14,7 +14,7 @@ namespace MornLib
                     _instance = FindAnyObjectByType<T>();
                     if (_instance == null)
                     {
-                        var obj = new GameObject(nameof(T));
+                        var obj = new GameObject(typeof(T).Name);
                         _instance = obj.AddComponent<T>();
                         _instance.OnInitialized();
                     }
