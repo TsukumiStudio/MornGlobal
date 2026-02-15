@@ -17,6 +17,8 @@ namespace MornLib
                         var obj = new GameObject(typeof(T).Name);
                         _instance = obj.AddComponent<T>();
                         _instance.OnInitialized();
+                        DontDestroyOnLoad(_instance.gameObject);
+                        I.Logger.Log($"{I.ModuleName}/{typeof(T).Name}を生成しました。");
                     }
                 }
 
@@ -33,6 +35,7 @@ namespace MornLib
             if (_instance == null)
             {
                 _instance = this as T;
+                transform.SetParent(null);
                 DontDestroyOnLoad(gameObject);
                 Logger.Log($"{ModuleName}/{typeof(T).Name}を読み込みました。");
                 OnInitialized();
