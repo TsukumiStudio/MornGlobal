@@ -8,7 +8,7 @@ namespace MornLib
         private static T _instance;
         public static T I => _instance ??= new T();
         private MornGlobalLogger _logger;
-        public MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(this);
+        private MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(this);
         string IMornGlobal.ModuleName => ModuleName;
         protected abstract string ModuleName { get; }
 
