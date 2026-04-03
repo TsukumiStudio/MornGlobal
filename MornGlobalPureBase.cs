@@ -1,37 +1,12 @@
-using System.Linq;
-using UnityEngine;
-
 namespace MornLib
 {
     public abstract class MornGlobalPureBase<T> : IMornGlobal where T : new()
     {
         private static T _instance;
         public static T I => _instance ??= new T();
-        private MornGlobalLogger _logger;
-        private MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(this);
+        private static MornGlobalLogger _logger;
+        public static MornGlobalLogger Logger => _logger ??= new MornGlobalLogger((IMornGlobal)I);
         string IMornGlobal.ModuleName => ModuleName;
         protected abstract string ModuleName { get; }
-
-        protected void LogInternal(string message)
-        {
-            Logger.Log(message);
-        }
-
-        protected void LogErrorInternal(string message)
-        {
-            Logger.LogError(message);
-        }
-
-        protected void LogWarningInternal(string message)
-        {
-            Logger.LogWarning(message);
-        }
-
-        protected void SetDirtyInternal(Object target)
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(target);
-#endif
-        }
     }
 }

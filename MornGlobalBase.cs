@@ -1,6 +1,8 @@
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace MornLib
 {
@@ -71,13 +73,6 @@ namespace MornLib
         {
             _instance = null;
             Logger.Log($"{ModuleName}/{typeof(T).Name}をアンロードしました。");
-        }
-
-        protected void SetDirtyInternal(Object target)
-        {
-#if UNITY_EDITOR
-            EditorUtility.SetDirty(target);
-#endif
         }
     }
 }

@@ -33,7 +33,7 @@ namespace MornLib
 
         public void LogError(string message)
         {
-            if (ShowLogWarning)
+            if (ShowLogError)
             {
                 Debug.LogError($"{Prefix} {message}");
             }
@@ -41,7 +41,7 @@ namespace MornLib
 
         public void LogWarning(string message)
         {
-            if (ShowLogError)
+            if (ShowLogWarning)
             {
                 Debug.LogWarning($"{Prefix} {message}");
             }

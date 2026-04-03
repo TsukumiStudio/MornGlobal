@@ -18,15 +18,15 @@ namespace MornLib
                         _instance = obj.AddComponent<T>();
                         _instance.OnInitialized();
                         DontDestroyOnLoad(_instance.gameObject);
-                        I.Logger.Log($"{I.ModuleName}/{typeof(T).Name}を生成しました。");
+                        Logger.Log($"{_instance.ModuleName}/{typeof(T).Name}を生成しました。");
                     }
                 }
 
                 return _instance;
             }
         }
-        private MornGlobalLogger _logger;
-        private MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(this);
+        private static MornGlobalLogger _logger;
+        public static MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(I);
         string IMornGlobal.ModuleName => ModuleName;
         protected abstract string ModuleName { get; }
 
