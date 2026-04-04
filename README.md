@@ -41,16 +41,13 @@ https://github.com/TsukumiStudio/MornGlobal.git
 
 ### モジュールログ
 
-- **カラープレフィックス** — `[ModuleName]` 付きでログを出力。色は `IMornGlobal.ModuleColor` で変更可能（デフォルト: green）
+- **カラープレフィックス** — `[ModuleName]` 付きでログを出力。色は `ModuleColor` を override して変更可能（デフォルト: green）
 - **リリースビルド除外** — `[Conditional]` 属性により、Editor・DevelopmentBuild以外ではログ呼び出し自体がコンパイルから除外
 - **Debug.Log互換** — `(object message)` と `(object message, Object context)` の両オーバーロードに対応
 
 ### Editorユーティリティ
 
 - **`MornGlobalUtil.SetDirty()`** — `EditorUtility.SetDirty` のランタイム安全ラッパー
-- **`MornGlobalUtil.EnsurePreloadedAsset()`** — ScriptableObjectをPreloadedAssetsに確実に登録
-- **`MornGlobalUtil.FindOrCreatePreloadedAsset()`** — PreloadedAssetsから検索、なければ作成ダイアログを表示
-- **`MornGlobalPreloader`** — PreloadedAssetsのHideFlagsを自動修正
 
 ## 使い方
 
