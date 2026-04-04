@@ -1,7 +1,5 @@
 # MornGlobal
 
-Singleton & Logging Core
-
 <p align="center">
   <img src="Editor/MornGlobal.png" alt="MornGlobal" width="640" />
 </p>
