@@ -51,20 +51,37 @@ https://github.com/TsukumiStudio/MornGlobal.git
 
 ## 使い方
 
-### ScriptableObject シングルトン
+### 定義
 
 ```csharp
+// ScriptableObject シングルトン
 [CreateAssetMenu(menuName = "Morn/MyGlobal")]
 public sealed class MyGlobal : MornGlobalBase<MyGlobal>
 {
     protected override string ModuleName => "MyModule";
+    protected override Color ModuleColor => Color.cyan; // 省略時は green
     [SerializeField] private float _speed = 1f;
     public float Speed => _speed;
 }
+
+// MonoBehaviour シングルトン
+public sealed class MyService : MornGlobalMonoBase<MyService>
+{
+    protected override string ModuleName => "MyService";
+    protected override void OnInitialized() { /* 初期化処理 */ }
+}
+
+// Pure C# シングルトン
+public sealed class MyPure : MornGlobalPureBase<MyPure>
+{
+    protected override string ModuleName => "MyPure";
+}
 ```
 
+### 共通アクセス（全Base共通）
+
 ```csharp
-// 設定値へのアクセス
+// シングルトンへのアクセス
 var speed = MyGlobal.I.Speed;
 
 // ログ出力
@@ -74,35 +91,6 @@ MyGlobal.Logger.LogError("エラー発生", this);
 
 // Editor SetDirty
 MornGlobalUtil.SetDirty(target);
-```
-
-### MonoBehaviour シングルトン
-
-```csharp
-public sealed class MyService : MornGlobalMonoBase<MyService>
-{
-    protected override string ModuleName => "MyService";
-    protected override void OnInitialized() { /* 初期化処理 */ }
-}
-```
-
-### Pure C# シングルトン
-
-```csharp
-public sealed class MyPure : MornGlobalPureBase<MyPure>
-{
-    protected override string ModuleName => "MyPure";
-}
-```
-
-### ログ色のカスタマイズ
-
-```csharp
-public sealed class MyGlobal : MornGlobalBase<MyGlobal>
-{
-    protected override string ModuleName => "MyModule";
-    protected override Color ModuleColor => Color.cyan;
-}
 ```
 
 ## ライセンス
