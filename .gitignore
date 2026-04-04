@@ -33,9 +33,8 @@
 *.opendb
 *.VC.db
 
-*LICENSE.meta
-*.md.meta
-*package.json.meta
+/LICENSE.meta
+/README.md.meta
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
