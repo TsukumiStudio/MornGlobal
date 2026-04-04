@@ -77,7 +77,7 @@ MyGlobal.Logger.Log("初期化完了");
 MyGlobal.Logger.LogWarning("値が未設定です");
 MyGlobal.Logger.LogError("エラー発生", this);
 
-// Editor SetDirty
+// Editor SetDirty（ランタイムで呼んでも安全）
 MornGlobalUtil.SetDirty(target);
 ```
 
