@@ -104,7 +104,7 @@ public sealed class MyPure : MornGlobalPureBase<MyPure>
 public sealed class MyGlobal : MornGlobalBase<MyGlobal>
 {
     protected override string ModuleName => "MyModule";
-    Color IMornGlobal.ModuleColor => Color.cyan;
+    protected override Color ModuleColor => Color.cyan;
 }
 ```
 
