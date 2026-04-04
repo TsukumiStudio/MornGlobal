@@ -12,13 +12,18 @@ namespace MornLib
                 if (_instance == null)
                 {
                     _instance = FindAnyObjectByType<T>();
-                    if (_instance == null)
+                    if (_instance != null)
+                    {
+                        _instance.transform.SetParent(null);
+                        DontDestroyOnLoad(_instance.gameObject);
+                        _instance.OnInitialized();
+                        Logger.Log($"{typeof(T).Name}を検出しました。");
+                    }
+                    else
                     {
                         var obj = new GameObject(typeof(T).Name);
                         _instance = obj.AddComponent<T>();
-                        _instance.OnInitialized();
-                        DontDestroyOnLoad(_instance.gameObject);
-                        Logger.Log($"{_instance.ModuleName}/{typeof(T).Name}を生成しました。");
+                        Logger.Log($"{typeof(T).Name}を新規生成しました。");
                     }
                 }
 
@@ -32,18 +37,20 @@ namespace MornLib
 
         private void Awake()
         {
-            if (_instance == null)
+            // I経由で既に初期化済み
+            if (_instance == this) return;
+            if (_instance != null)
             {
-                _instance = this as T;
-                transform.SetParent(null);
-                DontDestroyOnLoad(gameObject);
-                Logger.Log($"{ModuleName}/{typeof(T).Name}を読み込みました。");
-                OnInitialized();
-            }
-            else if (_instance != this)
-            {
+                Logger.LogError($"{typeof(T).Name}が重複しています。破棄します: {gameObject.name}");
                 Destroy(gameObject);
+                return;
             }
+
+            _instance = this as T;
+            transform.SetParent(null);
+            DontDestroyOnLoad(gameObject);
+            OnInitialized();
+            Logger.Log($"{typeof(T).Name}を読み込みました。");
         }
 
         protected abstract void OnInitialized();

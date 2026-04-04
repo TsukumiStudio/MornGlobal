@@ -1,5 +1,7 @@
-using UnityEditor;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
+using Object = UnityEngine.Object;
 
 namespace MornLib
 {
@@ -12,39 +14,42 @@ namespace MornLib
             _target = target;
         }
 
-#if UNITY_EDITOR
-        private bool ShowLog => EditorPrefs.GetBool($"{_target.ModuleName}_ShowLog", true);
-        private bool ShowLogWarning => EditorPrefs.GetBool($"{_target.ModuleName}_ShowLogWarning", true);
-        private bool ShowLogError => EditorPrefs.GetBool($"{_target.ModuleName}_ShowLogError", true);
-#else
-        private bool ShowLog => Debug.isDebugBuild;
-        private bool ShowLogWarning => Debug.isDebugBuild;
-        private bool ShowLogError => Debug.isDebugBuild;
-#endif
         private string Prefix => $"[<color=#{ColorUtility.ToHtmlStringRGB(_target.ModuleColor)}>{_target.ModuleName}</color>] ";
 
-        public void Log(string message)
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public void Log(object message)
         {
-            if (ShowLog)
-            {
-                Debug.Log($"{Prefix} {message}");
-            }
+            Debug.Log($"{Prefix}{message}");
         }
 
-        public void LogError(string message)
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public void Log(object message, Object context)
         {
-            if (ShowLogError)
-            {
-                Debug.LogError($"{Prefix} {message}");
-            }
+            Debug.Log($"{Prefix}{message}", context);
         }
 
-        public void LogWarning(string message)
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public void LogWarning(object message)
         {
-            if (ShowLogWarning)
-            {
-                Debug.LogWarning($"{Prefix} {message}");
-            }
+            Debug.LogWarning($"{Prefix}{message}");
+        }
+
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public void LogWarning(object message, Object context)
+        {
+            Debug.LogWarning($"{Prefix}{message}", context);
+        }
+
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public void LogError(object message)
+        {
+            Debug.LogError($"{Prefix}{message}");
+        }
+
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public void LogError(object message, Object context)
+        {
+            Debug.LogError($"{Prefix}{message}", context);
         }
     }
 }

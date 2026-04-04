@@ -1,8 +1,4 @@
-using System.Linq;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace MornLib
 {
@@ -16,31 +12,7 @@ namespace MornLib
 #if UNITY_EDITOR
                 if (_instance == null)
                 {
-                    {
-                        var preloadedAssets = PlayerSettings.GetPreloadedAssets().ToList();
-                        _instance = preloadedAssets.OfType<T>().FirstOrDefault();
-                        if (_instance != null)
-                        {
-                            return _instance;
-                        }
-                    }
-                    var path = EditorUtility.SaveFilePanelInProject(
-                        $"Save {typeof(T).Name}",
-                        $"{typeof(T).Name}",
-                        "asset",
-                        string.Empty);
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        var newSettings = CreateInstance<T>();
-                        AssetDatabase.CreateAsset(newSettings, path);
-                        var preloadedAssets = PlayerSettings.GetPreloadedAssets().ToList();
-                        preloadedAssets.RemoveAll(x => x is T);
-                        preloadedAssets.Add(newSettings);
-                        PlayerSettings.SetPreloadedAssets(preloadedAssets.ToArray());
-                    }
-
-                    _instance = AssetDatabase.FindAssets($"t:{typeof(T).Name}").Select(AssetDatabase.GUIDToAssetPath)
-                                             .Select(AssetDatabase.LoadAssetAtPath<T>).FirstOrDefault();
+                    _instance = MornGlobalUtil.FindOrCreatePreloadedAsset<T>();
                 }
 #endif
                 return _instance;
@@ -53,26 +25,40 @@ namespace MornLib
 
         private void OnEnable()
         {
-            _instance = (T)this;
-            Logger.Log($"{ModuleName}/{typeof(T).Name}を読み込みました。");
-#if UNITY_EDITOR
-            var preloadedAssets = PlayerSettings.GetPreloadedAssets().ToList();
-            if (preloadedAssets.Contains(I) && preloadedAssets.Count(x => x is T) == 1)
+            if (_instance != null && _instance != this)
             {
+                var message = $"{typeof(T).Name}が重複しています。破棄します: {name}";
+                Logger.LogWarning(message);
+#if UNITY_EDITOR
+                var self = this;
+                var assetPath = UnityEditor.AssetDatabase.GetAssetPath(this);
+                UnityEditor.EditorApplication.delayCall += () =>
+                {
+                    UnityEditor.EditorUtility.DisplayDialog($"{typeof(T).Name} 重複", message, "OK");
+                    if (!string.IsNullOrEmpty(assetPath))
+                    {
+                        UnityEditor.AssetDatabase.DeleteAsset(assetPath);
+                    }
+                    else
+                    {
+                        DestroyImmediate(self, true);
+                    }
+                };
+#else
+                DestroyImmediate(this, true);
+#endif
                 return;
             }
 
-            preloadedAssets.RemoveAll(x => x is T);
-            preloadedAssets.Add(I);
-            PlayerSettings.SetPreloadedAssets(preloadedAssets.ToArray());
-            Logger.Log($"{ModuleName}/{typeof(T).Name}をPreloadedAssetsに追加しました。");
-#endif
+            _instance = (T)this;
+            Logger.Log($"{typeof(T).Name}を読み込みました。");
+            MornGlobalUtil.EnsurePreloadedAsset(I);
         }
 
         private void OnDisable()
         {
             _instance = null;
-            Logger.Log($"{ModuleName}/{typeof(T).Name}をアンロードしました。");
+            Logger.Log($"{typeof(T).Name}をアンロードしました。");
         }
     }
 }
