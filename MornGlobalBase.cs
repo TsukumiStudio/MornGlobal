@@ -21,7 +21,9 @@ namespace MornLib
         private static MornGlobalLogger _logger;
         public static MornGlobalLogger Logger => _logger ??= new MornGlobalLogger(I);
         string IMornGlobal.ModuleName => ModuleName;
+        Color IMornGlobal.ModuleColor => ModuleColor;
         protected abstract string ModuleName { get; }
+        protected virtual Color ModuleColor => Color.green;
 
         private void OnEnable()
         {
