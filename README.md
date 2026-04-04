@@ -51,10 +51,9 @@ https://github.com/TsukumiStudio/MornGlobal.git
 
 ## 使い方
 
-### 定義
+### ScriptableObject シングルトン
 
 ```csharp
-// ScriptableObject シングルトン
 [CreateAssetMenu(menuName = "Morn/MyGlobal")]
 public sealed class MyGlobal : MornGlobalBase<MyGlobal>
 {
@@ -63,15 +62,21 @@ public sealed class MyGlobal : MornGlobalBase<MyGlobal>
     [SerializeField] private float _speed = 1f;
     public float Speed => _speed;
 }
+```
 
-// MonoBehaviour シングルトン
+### MonoBehaviour シングルトン
+
+```csharp
 public sealed class MyService : MornGlobalMonoBase<MyService>
 {
     protected override string ModuleName => "MyService";
     protected override void OnInitialized() { /* 初期化処理 */ }
 }
+```
 
-// Pure C# シングルトン
+### Pure C# シングルトン
+
+```csharp
 public sealed class MyPure : MornGlobalPureBase<MyPure>
 {
     protected override string ModuleName => "MyPure";
