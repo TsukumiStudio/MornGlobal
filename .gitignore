@@ -45,4 +45,5 @@
 *.app
 *.DS_Store
 
-*crashlytics-build.propertiessrc.meta
+*crashlytics-build.properties
+src.meta
