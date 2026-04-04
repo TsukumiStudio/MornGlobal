@@ -35,6 +35,7 @@
 
 *LICENSE.meta
 *.md.meta
+*package.json.meta
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
