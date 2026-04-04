@@ -21,7 +21,7 @@ namespace MornLib
         private bool ShowLogWarning => Debug.isDebugBuild;
         private bool ShowLogError => Debug.isDebugBuild;
 #endif
-        private string Prefix => $"[<color=green>{_target.ModuleName}</color>] ";
+        private string Prefix => $"[<color=#{ColorUtility.ToHtmlStringRGB(_target.ModuleColor)}>{_target.ModuleName}</color>] ";
 
         public void Log(string message)
         {
